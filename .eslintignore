@@ -1,4 +1,4 @@
-models/index.js
+# models/index.js
 node_modules
 **/*.css
 **/*.json

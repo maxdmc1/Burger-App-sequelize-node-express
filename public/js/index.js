@@ -1,74 +1,77 @@
 import API from "/js/api.js";
 
 // Get references to page elements
-const exampleTextEl = document.getElementById("example-text");
-const exampleDescriptionEl = document.getElementById("example-description");
-const submitBtnEl = document.getElementById("submit");
-const exampleListEl = document.getElementById("example-list");
+const burgerTextEl = document.getElementById("burger-text");
+const createBtnEl = document.getElementById("create");
+const burgerListEl = document.getElementById("burger-list");
+const eatenBurgerListEl = document.getElementById("eaten-burger-list");
 
-// refreshExamples gets new examples from the db and repopulates the list
-const refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    const exampleEls = data.map(function(example) {
-      const aEl = document.createElement("a");
-      aEl.innerHTML = example.text;
-      aEl.setAttribute("href", "/example/?id=" + example.id);
+// refreshBurgers gets new burgers from the db and repopulates the list
+const refreshBurgers = function() {
+  API.getBurgers().then(function(data) {
+    burgerListEl.innerHTML = "";
+    eatenBurgerListEl.innerHTML = "";
+    for (let i = 0; i < data.length; i++) {
+      if (!data[i].isEaten) {
+        const aEl = document.createElement("a");
+        aEl.innerHTML = data[i].text;
 
-      const liEl = document.createElement("li");
-      liEl.classList.add("list-group-item");
-      liEl.setAttribute("data-id", example.id);
-      liEl.append(aEl);
+        const liEl = document.createElement("li");
+        liEl.classList.add("list-group-item");
+        liEl.setAttribute("data-id", data[i].id);
+        liEl.append(aEl);
 
-      const buttonEl = document.createElement("button");
-      buttonEl.classList.add("btn", "btn-danger", "float-right", "delete");
-      buttonEl.innerHTML = "ｘ";
-      buttonEl.addEventListener("click", handleDeleteBtnClick);
+        const buttonEl = document.createElement("button");
+        buttonEl.classList.add("btn", "btn-danger", "float-right", "eat");
+        buttonEl.innerHTML = "EAT!!";
+        buttonEl.addEventListener("click", handleEatBtnClick);
 
-      liEl.append(buttonEl);
+        liEl.append(buttonEl);
+        burgerListEl.append(liEl);
+      } else {
+        const aEl = document.createElement("a");
+        aEl.innerHTML = data[i].text;
 
-      return liEl;
-    });
+        const liEl = document.createElement("li");
+        liEl.classList.add("list-group-item");
+        liEl.setAttribute("data-id", data[i].id);
+        liEl.append(aEl);
 
-    exampleListEl.innerHTML = "";
-    exampleListEl.append(...exampleEls);
+        eatenBurgerListEl.append(liEl);
+      }
+    }
   });
 };
-refreshExamples();
+refreshBurgers();
 
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-const handleFormSubmit = function(event) {
+// handleFormCreate is called whenever we submit a new example
+// Save the new burger to the db and refresh the list
+const handleFormCreate = function(event) {
   event.preventDefault();
 
-  const example = {
-    text: exampleTextEl.value.trim(),
-    description: exampleDescriptionEl.value.trim()
+  const burger = {
+    text: burgerTextEl.value.trim()
   };
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
+  if (!burger.text) {
+    alert("You must enter a name of a burger!");
     return;
   }
 
-  API.saveExample(example).then(function() {
-    refreshExamples();
+  API.saveBurger(burger).then(function() {
+    refreshBurgers();
   });
 
-  exampleTextEl.value = "";
-  exampleDescriptionEl.value = "";
+  burgerTextEl.value = "";
 };
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-const handleDeleteBtnClick = function(event) {
-  const idToDelete = event.target.parentElement.getAttribute("data-id");
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
+const handleEatBtnClick = function(event) {
+  const idToEat = event.target.parentElement.getAttribute("data-id");
+  API.updateBurger(idToEat).then(function() {
+    console.log(idToEat);
+    refreshBurgers();
   });
 };
 
-// Add event listeners to the submit and delete buttons
-submitBtnEl.addEventListener("click", handleFormSubmit);
-document.querySelectorAll(".delete").forEach(btn => {
-  btn.addEventListener("click", handleDeleteBtnClick);
-});
+// Add event listeners to the submit and eat buttons
+createBtnEl.addEventListener("click", handleFormCreate);

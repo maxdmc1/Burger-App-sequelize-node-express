@@ -1,23 +1,23 @@
 // The API object contains methods for each kind of request we'll make
 export default {
-  saveExample: function(example) {
-    return fetch("/api/examples", {
+  saveBurger: function(burger) {
+    return fetch("/api/burgers", {
       headers: {
         "Content-Type": "application/json"
       },
       method: "POST",
-      body: JSON.stringify(example)
+      body: JSON.stringify(burger)
     }).then(res => res.json());
   },
-  getExamples: function() {
-    return fetch("/api/examples").then(res => res.json());
+  getBurgers: function() {
+    return fetch("/api/burgers").then(res => res.json());
   },
-  getExample: function(id) {
-    return fetch(`/api/examples/${id}`).then(res => res.json());
+  getBurger: function(id) {
+    return fetch(`/api/burgers/${id}`).then(res => res.json());
   },
-  deleteExample: function(id) {
-    return fetch("/api/examples/" + id, {
-      method: "DELETE"
+  updateBurger: function(id) {
+    return fetch("/api/burgers/" + id, {
+      method: "PUT"
     }).then(res => res.json);
   }
 };

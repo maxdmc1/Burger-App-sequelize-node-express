@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <link rel="stylesheet" href="/styles/styles.css">
-</head>
-<body>
-    <h1>Example</h1>
-    <input id="example-text">
-    <input id="example-description">
-    <button id="submit">submit</button>
-    <div id="example-list"></div>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/styles/styles.css" />
+  </head>
+  <body>
+    <h1>Burger App</h1>
+    <h2>Are you ready to create your burger?</h2>
+    <img src="./images/burger.jpg" alt="burger photo" />
+    <div class="container">
+      <div class="row">
+        <div class="mx-auto mb-4">
+          <input id="burger-text" placeholder="Enter a burger to create" />
+          <button id="create">Create Your Burger</button>
+        </div>
+      </div>
+      <div class="row">
+        <div id="burger-list" class="col-6" style="width: 90%"></div>
+        <div id="eaten-burger-list" class="col-6"></div>
+      </div>
+    </div>
     <script src="/js/index.js" type="module"></script>
-</body>
+  </body>
 </html>

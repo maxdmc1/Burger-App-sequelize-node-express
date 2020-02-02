@@ -1,39 +1,41 @@
 var db = require("../models");
 
 module.exports = {
-  postExampleApi: async function(req, res) {
-    const dbExample = await db.Example.create(req.body);
-    res.json(dbExample);
+  postBurgerApi: async function(req, res) {
+    const dbBurger = await db.Burger.create(req.body);
+    res.json(dbBurger);
   },
   api: function(app) {
-    // Get all examples
-    app.get("/api/examples", function(req, res) {
-      db.Example.findAll({}).then(function(dbExamples) {
-        res.json(dbExamples);
+    // Get all burgers
+    app.get("/api/burgers", function(req, res) {
+      db.Burger.findAll({}).then(function(dbBurgers) {
+        console.log(dbBurgers);
+        res.json(dbBurgers);
       });
     });
 
-    // Get an example
-    app.get("/api/examples/:id", function(req, res) {
+    // Get a burger
+    app.get("/api/burgers/:id", function(req, res) {
       console.log({ id: req.params.id });
-      db.Example.findAll({ where: { id: req.params.id } }).then(function(
-        dbExamples
+      db.Burger.findAll({ where: { id: req.params.id } }).then(function(
+        dbBurgers
       ) {
-        console.log(dbExamples);
-        res.json(dbExamples[0]);
+        console.log(dbBurgers);
+        res.json(dbBurgers[0]);
       });
     });
 
-    // Create a new example
-    app.post("/api/examples", this.postExampleApi);
+    // Create a new burger
+    app.post("/api/burgers", this.postBurgerApi);
 
-    // Delete an example by id
-    app.delete("/api/examples/:id", function(req, res) {
-      db.Example.destroy({ where: { id: req.params.id } }).then(function(
-        dbExample
-      ) {
-        res.json(dbExample);
-      });
+    // eat a burger
+    app.put("/api/burgers/:id", async function(req, res) {
+      const eatenBurger = await db.Burger.update(
+        { isEaten: true },
+        { where: { id: req.params.id } }
+      );
+      console.log(eatenBurger);
+      res.json(eatenBurger);
     });
   }
 };
